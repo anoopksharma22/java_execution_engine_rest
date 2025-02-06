@@ -1,82 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java Code Editor</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px;
-        }
-        #editor {
-            width: 80%;
-            height: 400px;
-            border: 1px solid #ddd;
-        }
-        #submit-btn {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #output {
-            margin-top: 20px;
-            padding: 10px;
-            width: 80%;
-            border: 1px solid #ddd;
-            background: #f9f9f9;
-            min-height: 50px;
-            white-space: pre-wrap;
-        }
-    </style>
-</head>
-<body>
-
-    <h2>Java Code Editor</h2>
-    <div id="editor"></div>
-    <button id="submit-btn">Run Code</button>
-    <h3>Output:</h3>
-    <pre id="output">Waiting for output...</pre>
-
-    <script>
-        let editor;
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' }});
-        require(["vs/editor/editor.main"], function () {
-            editor = monaco.editor.create(document.getElementById('editor'), {
-                value: `public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-    }
-}`,
-                language: "java",
-                theme: "vs-dark",
-                automaticLayout: true
-            });
-        });
-
-        document.getElementById('submit-btn').addEventListener('click', async function () {
-            const code = editor.getValue();
-            document.getElementById('output').textContent = "Running...";
-
-            try {
-                const response = await fetch("http://localhost:8080/api/execute", {
-                    method: "POST",
-                    headers: { "Content-Type": "text/plain" },
-                    body: code
-                });
-
-                const result = await response.json();  // Parse the response as JSON
-                    document.getElementById('output').textContent = result.output || 'No output returned';  // Assuming the JSON has an 'output' key
-                } catch (error) {
-                    document.getElementById('output').textContent = "Error: " + error.message;
-                }
-        });
-    </script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 public class DockerCodeExecutionService {
 
     public ExecutionResponse execute(String code) throws IOException, InterruptedException {
-        Path tempDir = Paths.get("temp").toAbsolutePath();;
+        Path tempDir = Paths.get("temp").toAbsolutePath();
         if (!Files.exists(tempDir)) {
             Files.createDirectories(tempDir);
         }

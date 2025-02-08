@@ -101,6 +101,9 @@ public class CodeExecutor {
             } catch (IOException e) {
                 log.error(e.getMessage());
             }
+
+        });
+        executor.submit(() -> {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -112,6 +115,7 @@ public class CodeExecutor {
         });
         executor.shutdown();
         process.waitFor();
+
         return new ExecutionResponse(stdout.toString().trim(), stderr.toString().trim());
     }
 }

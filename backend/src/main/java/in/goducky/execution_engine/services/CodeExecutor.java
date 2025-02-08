@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,12 +27,10 @@ public class CodeExecutor {
         try {
             // Write the Java code to a file
             path = writeToFile(javaCode);
-            log.info("path " + path);
-            // Compile the Java code
-            if (!compile(path)) {
-                return new ExecutionResponse("", "Compilation failed. Check your syntax.");
+            CompliationOutput compilationResult = compile(path);
+            if (!compilationResult.success) {
+                return new ExecutionResponse("", compilationResult.message);
             }
-
             // Execute and return output
             return run(path);
 
@@ -67,9 +63,22 @@ public class CodeExecutor {
     }
 
     // Method to compile Java code dynamically
-    public boolean compile(Path path) {
+    public CompliationOutput compile(Path path) {
+        StringWriter output = new StringWriter();
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        return compiler.run(null, null, null, path.toString()) == 0;
+        ByteArrayOutputStream errorStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int result = compiler.run(null,
+                new PrintStream(outputStream),
+                new PrintStream(errorStream),
+                path.toString());
+
+//        return compiler.run(null, null, null, path.toString()) == 0;
+        if (result == 0) {
+            return new CompliationOutput(true,outputStream.toString());
+        } else {
+            return new CompliationOutput(false,errorStream.toString());
+        }
     }
 
     // Method to run the compiled Java class

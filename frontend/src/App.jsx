@@ -22,7 +22,12 @@ const App = () => {
             });
 
             const result = await response.json();
-            setOutput(result.output || "No output returned");
+            if( result.output !== "" ) {
+                setOutput(result.output || "No output returned");
+            }else{
+                setOutput(result.error || "No output returned");
+            }
+
         } catch (error) {
             setOutput(`Error: ${error.message}`);
         } finally {

@@ -53,6 +53,8 @@
 
 .output .output-text{
     font-size: large;
+    background-color: #151515;
+    padding: 10px;
 }
 
 button {

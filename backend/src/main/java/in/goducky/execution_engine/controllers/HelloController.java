@@ -24,11 +24,11 @@ public class HelloController {
         return ResponseEntity.ok("Hello World");
     }
 
-    @PostMapping("/submit")
-    public ResponseEntity<ExecutionResponse> submit(@RequestBody String code) throws IOException, InterruptedException {
-        ExecutionResponse output = dockerCodeExecutionService.execute(code);
-        return ResponseEntity.ok(output);
-    }
+//    @PostMapping("/submit")
+//    public ResponseEntity<ExecutionResponse> submit(@RequestBody String code) throws IOException, InterruptedException {
+//        ExecutionResponse output = dockerCodeExecutionService.execute(code);
+//        return ResponseEntity.ok(output);
+//    }
     @PostMapping("/execute")
     public ResponseEntity<ExecutionResponse> executeJavaCode(@RequestBody String javaCode) {
         ExecutionResponse output = codeExecutor.execute(javaCode);

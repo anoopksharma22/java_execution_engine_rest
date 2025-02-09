@@ -1,15 +1,28 @@
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
 import "./App.css";
+import Navbar from "./components/Navbar.jsx";
+import {RiResetLeftLine} from "react-icons/ri";
+
 const App = () => {
-    const [code, setCode] = useState(`public class Main {
+    const [code, setCode] = useState(`// Do not rename to class name
+public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, Java!");
     }
 }`);
     const [output, setOutput] = useState("Waiting for output...");
     const [loading, setLoading] = useState(false);
+    const handleReset = async () => {
+        setCode(`// Do not rename to class name
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}`);
+        setOutput("Waiting for output...");
 
+    };
     const handleRunCode = async () => {
         setLoading(true);
         setOutput("Running...");
@@ -36,41 +49,38 @@ const App = () => {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 20, width: "100%", maxWidth: "1200px", margin: "0 auto" }}>
-            <h2>Java Code Editor</h2>
-            <div style={{ width: "100%", height: "400px", border: "1px solid #ddd" }}>
-                <Editor
-                    height="100%"
-                    defaultLanguage="java"
-                    defaultValue={code}
-                    theme="vs-dark"
-                    onChange={(value) => setCode(value)}
-                />
+        <div className="main-container">
+            <Navbar />
+            <div className="editor-container">
+                <h3 className="title">Java code editor</h3>
+                <div className="editor">
+                    <Editor
+                        height="100%"
+                        defaultLanguage="java"
+                        value={code}
+                        theme="vs-dark"
+                        options={{
+                            fontSize: "16px", // Set font size dynamically
+                        }}
+                        onChange={(value) => setCode(value)}
+                    />
+                    <div className="editor-buttons">
+                        <RiResetLeftLine onClick={handleReset} className="reset-button" />
+                        <button className="run-button" onClick={handleRunCode} disabled={loading}>
+                            {loading ? "Running..." : "Run Code"}
+                        </button>
+                    </div>
+                </div>
+
+                <div className="output">
+                    <h3>Output:</h3>
+                    <pre className="output-text">
+                        {output}
+                    </pre>
+                </div>
             </div>
-            <button
-                onClick={handleRunCode}
-                disabled={loading}
-                style={{ marginTop: 10, padding: "10px 20px", fontSize: 16, cursor: "pointer" }}
-            >
-                {loading ? "Running..." : "Run Code"}
-            </button>
-            <h3>Output:</h3>
-            <pre
-                style={{
-                    marginTop: 10,
-                    padding: 10,
-                    width: "100%",
-                    border: "1px solid #ddd",
-                    background: "#f9f9f9",
-                    minHeight: 50,
-                    whiteSpace: "pre-wrap",
-                    color: "#333", // Ensures the text is dark for visibility
-                    fontFamily: "monospace" // For better text rendering
-                }}
-            >
-                {output}
-            </pre>
         </div>
+
     );
 };
 

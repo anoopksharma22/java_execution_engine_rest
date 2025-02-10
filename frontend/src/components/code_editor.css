@@ -5,12 +5,15 @@
     display: flex;
     flex-direction: column;
 }
+.code-editor{
+    border: 1px solid #4c4c4c;
+    margin-top: 10px;
+}
 .editor-container .title{
     padding: 10px;
 }
 .editor{
     height: 70vh;
-    border: 1px solid #4c4c4c;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -26,7 +29,7 @@
     align-items: end;
 }
 .reset-button{
-    background-color: #d57777;
+    background-color: #E74C3C;
     height: 40px;
     width: 40px;
     border-radius: 8px;
@@ -35,24 +38,22 @@
     transition: border-color 0.25s;
 }
 .reset-button:hover {
-    border-color: #f83f1d;
+    border-color: #ECF0F1;
 
 }
 
 
-.output{
+.output {
     margin-top: 10px;
     background-color: #222222;
     border: 1px solid #4c4c4c;
-    padding: 10px;
-
 }
-.output h3{
-    margin-bottom: 10px;
+.output p{
+    padding: 10px;
 }
 
 .output .output-text{
-    font-size: large;
+    font-size: 16px;
     background-color: #151515;
     padding: 10px;
 }
@@ -64,12 +65,12 @@ button {
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: #41784c;
+    background-color: #27AE60;
     cursor: pointer;
     transition: border-color 0.25s;
 }
 button:hover {
-    border-color: #9dff64;
+    border-color: #ECF0F1;
 }
 button:focus,
 button:focus-visible {

@@ -49,28 +49,30 @@ public class Main {
     return (
         <>
             <div className="editor-container">
-                <h3 className="title">Java code editor</h3>
-                <div className="editor">
-                    <Editor
-                        height="100%"
-                        defaultLanguage="java"
-                        value={code}
-                        theme="vs-dark"
-                        options={{
-                            fontSize: "16px", // Set font size dynamically
-                        }}
-                        onChange={(value) => setCode(value)}
-                    />
-                    <div className="editor-buttons">
-                        <RiResetLeftLine onClick={handleReset} className="reset-button" />
-                        <button className="run-button" onClick={handleRunCode} disabled={loading}>
-                            {loading ? "Running..." : "Run Code"}
-                        </button>
+                <div className="code-editor">
+                <p className="title">Java code editor</p>
+                    <div className="editor">
+                        <Editor
+                            height="100%"
+                            defaultLanguage="java"
+                            value={code}
+                            theme="vs-dark"
+                            options={{
+                                fontSize: "16px", // Set font size dynamically
+                            }}
+                            onChange={(value) => setCode(value)}
+                        />
+                        <div className="editor-buttons">
+                            <RiResetLeftLine onClick={handleReset} className="reset-button" />
+                            <button className="run-button" onClick={handleRunCode} disabled={loading}>
+                                {loading ? "Running..." : "Run Code"}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div className="output">
-                    <h3>Output:</h3>
+                    <p>Output:</p>
                     <pre className="output-text">
                         {output}
                     </pre>

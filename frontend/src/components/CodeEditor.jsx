@@ -58,7 +58,7 @@ public class Main {
                             value={code}
                             theme="vs-dark"
                             options={{
-                                fontSize: "16px", // Set font size dynamically
+                                fontSize: 16, // Set font size dynamically
                             }}
                             onChange={(value) => setCode(value)}
                         />

@@ -11,6 +11,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -36,35 +38,41 @@ public class CodeExecutor {
 
         } catch (Exception e) {
             return new ExecutionResponse("", e.getMessage());
-        } finally {
-            try {
+        }
+        finally {
+            try{
                 assert path != null;
-                if (Files.deleteIfExists(path)) {
-                    System.out.println("File deleted successfully: " + path);
-                } else {
-                    System.out.println("File does not exist: " + path);
-                }
+                deleteTempDirectory(path);
             } catch (IOException e) {
-                System.err.println("Failed to delete file: " + e.getMessage());
+                log.error("Failed to delete temporary directory: {}", e.getMessage());
             }
         }
     }
 
     // Method to write user-submitted Java code to a file
     public Path writeToFile(String code) throws IOException {
-        Path tempDir = Paths.get("temp").toAbsolutePath();
-        if (!Files.exists(tempDir)) {
-            Files.createDirectories(tempDir);
-        }
+        Path tempDir = Files.createTempDirectory("temp_" + UUID.randomUUID());
         Path file = tempDir.resolve(JAVA_FILE_NAME);
-        Files.createFile(file);
         Files.write(file, code.getBytes());
         return file;
     }
-
+    public void deleteTempDirectory(Path file) throws IOException {
+        Path tempDir = file.getParent();
+        if (Files.exists(tempDir)) {
+            Files.walk(tempDir)
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            log.info("Deleting temporary directory: {}", path);
+                            Files.delete(path);
+                        } catch (IOException e) {
+                            log.error("Failed to delete temporary files: {}", e.getMessage());
+                        }
+                    });
+        }
+    }
     // Method to compile Java code dynamically
     public CompliationOutput compile(Path path) {
-        StringWriter output = new StringWriter();
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         ByteArrayOutputStream errorStream = new ByteArrayOutputStream();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

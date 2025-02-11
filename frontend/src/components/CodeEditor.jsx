@@ -26,7 +26,7 @@ public class Main {
         setOutput("Running...");
 
         try {
-            const response = await fetch("http://localhost:8080/api/execute", {
+            const response = await fetch("https://goducky.in/api/execute", {
                 method: "POST",
                 headers: { "Content-Type": "text/plain" },
                 body: code
